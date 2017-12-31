@@ -4,8 +4,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.List;
 
+import io.reactivex.observers.DisposableObserver;
 import ir.fallahpoor.ca.domain.Category;
-import ir.fallahpoor.ca.domain.interactor.DefaultObserver;
 import ir.fallahpoor.ca.domain.interactor.GetFeaturedCategoriesUseCase;
 import ir.fallahpoor.ca.featuredcategories.model.CategoryModelDataMapper;
 import ir.fallahpoor.ca.featuredcategories.view.FeaturedCategoriesView;
@@ -29,11 +29,12 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
         getFeaturedCategoriesUseCase.execute(new FeaturedCategoriesObserver(), null);
     }
 
-    private final class FeaturedCategoriesObserver extends DefaultObserver<List<Category>> {
+    private final class FeaturedCategoriesObserver extends DisposableObserver<List<Category>> {
 
         @Override
-        public void onComplete() {
-            ifViewAttached(false, FeaturedCategoriesView::hideLoading);
+        public void onNext(List<Category> categories) {
+            ifViewAttached(false,
+                    view -> view.renderCategories(categoryModelDataMapper.transform(categories)));
         }
 
         @Override
@@ -45,17 +46,10 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
         }
 
         @Override
-        public void onNext(List<Category> categories) {
-            ifViewAttached(false,
-                    view -> view.renderCategories(categoryModelDataMapper.transform(categories)));
+        public void onComplete() {
+            ifViewAttached(false, FeaturedCategoriesView::hideLoading);
         }
 
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        getFeaturedCategoriesUseCase.dispose();
     }
 
 }

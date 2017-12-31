@@ -5,6 +5,7 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import ir.fallahpoor.ca.UiThread;
+import ir.fallahpoor.ca.data.entity.CategoryEntityDataMapper;
 import ir.fallahpoor.ca.data.repository.CategoryRepositoryImpl;
 import ir.fallahpoor.ca.data.executor.JobExecutor;
 import ir.fallahpoor.ca.domain.executor.PostExecutionThread;
@@ -58,8 +59,9 @@ public class FeaturedCategoriesModule {
     }
 
     @Provides
-    CategoryRepository provideCategoryRepository() {
-        return new CategoryRepositoryImpl();
+    CategoryRepository provideCategoryRepository(CategoryEntityDataMapper
+                                                         categoryEntityDataMapper) {
+        return new CategoryRepositoryImpl(categoryEntityDataMapper);
     }
 
     @Provides

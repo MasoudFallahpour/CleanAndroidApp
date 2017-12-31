@@ -15,8 +15,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     private CategoryEntityDataMapper categoryEntityDataMapper;
 
-    public CategoryRepositoryImpl() {
-        categoryEntityDataMapper = new CategoryEntityDataMapper();
+    public CategoryRepositoryImpl(CategoryEntityDataMapper categoryEntityDataMapper) {
+        this.categoryEntityDataMapper = categoryEntityDataMapper;
     }
 
     @Override

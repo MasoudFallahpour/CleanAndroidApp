@@ -12,7 +12,9 @@ public interface FeaturedCategoriesView extends MvpView {
 
     void hideLoading();
 
-    void error();
+    void showRetry();
+
+    void hideRetry();
 
     void renderCategories(List<CategoryModel> categories);
 

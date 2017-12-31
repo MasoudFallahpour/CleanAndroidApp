@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
@@ -28,6 +29,8 @@ public class FeaturedCategoriesActivity extends
 
     @BindView(R.id.loading_layout)
     FrameLayout loadingLayout;
+    @BindView(R.id.retry_layout)
+    RelativeLayout retryLayout;
     @BindView(R.id.categories_recycler_view)
     RecyclerView categoriesRecyclerView;
     @Inject
@@ -44,7 +47,7 @@ public class FeaturedCategoriesActivity extends
         setContentView(R.layout.activity_featured_categories);
         ButterKnife.bind(this);
 
-        setupRecyclerView();
+        setupViews();
 
         getPresenter().getFeaturedCategories();
 
@@ -67,8 +70,13 @@ public class FeaturedCategoriesActivity extends
     }
 
     @Override
-    public void error() {
-        findViewById(R.id.error_text_view).setVisibility(View.VISIBLE);
+    public void showRetry() {
+        retryLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideRetry() {
+        retryLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -77,9 +85,11 @@ public class FeaturedCategoriesActivity extends
         categoriesAdapter.setCategoryModelList(categories);
     }
 
-    private void setupRecyclerView() {
+    private void setupViews() {
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         categoriesRecyclerView.setAdapter(categoriesAdapter);
+        findViewById(R.id.retry_button).setOnClickListener(
+                view -> getPresenter().getFeaturedCategories());
     }
 
     private void injectDependencies() {

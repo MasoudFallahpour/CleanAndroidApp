@@ -25,7 +25,10 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
 
     @Override
     public void getFeaturedCategories() {
-        ifViewAttached(false, FeaturedCategoriesView::showLoading);
+        ifViewAttached(false, view -> {
+            view.hideRetry();
+            view.showLoading();
+        });
         getFeaturedCategoriesUseCase.execute(new FeaturedCategoriesObserver(), null);
     }
 
@@ -34,14 +37,17 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
         @Override
         public void onNext(List<Category> categories) {
             ifViewAttached(false,
-                    view -> view.renderCategories(categoryModelDataMapper.transform(categories)));
+                    view -> {
+                        view.hideRetry();
+                        view.renderCategories(categoryModelDataMapper.transform(categories));
+                    });
         }
 
         @Override
         public void onError(Throwable e) {
             ifViewAttached(false, view -> {
                 view.hideLoading();
-                view.error();
+                view.showRetry();
             });
         }
 

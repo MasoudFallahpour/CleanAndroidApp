@@ -8,21 +8,6 @@ import ir.fallahpoor.ca.domain.Category;
 
 public class CategoryModelDataMapper {
 
-    public CategoryModel transform(Category category) {
-
-        if (category == null) {
-            throw new IllegalArgumentException("Cannot transform a null value");
-        }
-
-        final CategoryModel categoryModel = new CategoryModel();
-        categoryModel.setId(category.getId());
-        categoryModel.setName(category.getName());
-        categoryModel.setDescription(category.getDescription());
-
-        return categoryModel;
-
-    }
-
     public List<CategoryModel> transform(List<Category> categoryCollection) {
 
         List<CategoryModel> categoryModelCollection;
@@ -40,6 +25,21 @@ public class CategoryModelDataMapper {
         }
 
         return categoryModelCollection;
+
+    }
+
+    private CategoryModel transform(Category category) {
+
+        if (category == null) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+
+        final CategoryModel categoryModel = new CategoryModel();
+        categoryModel.setId(category.getId());
+        categoryModel.setName(category.getName());
+        categoryModel.setDescription(category.getDescription());
+
+        return categoryModel;
 
     }
 

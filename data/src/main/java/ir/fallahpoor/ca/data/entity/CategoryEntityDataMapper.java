@@ -11,7 +11,7 @@ import ir.fallahpoor.ca.domain.Category;
 public class CategoryEntityDataMapper {
 
     @Inject
-    public CategoryEntityDataMapper() {
+    CategoryEntityDataMapper() {
     }
 
     private Category transform(CategoryEntity categoryEntity) {

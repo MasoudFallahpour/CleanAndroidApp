@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ir.fallahpoor.ca.domain.Category;
 
 public class CategoryModelDataMapper {
+
+    @Inject
+    CategoryModelDataMapper() {
+    }
 
     public List<CategoryModel> transform(List<Category> categoryCollection) {
 

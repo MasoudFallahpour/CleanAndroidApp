@@ -54,24 +54,19 @@ public class FeaturedCategoriesModule {
     }
 
     @Provides
-    CategoryModelDataMapper provideCategoryModelDataMapper() {
-        return new CategoryModelDataMapper();
-    }
-
-    @Provides
     CategoryRepository provideCategoryRepository(CategoryEntityDataMapper
                                                          categoryEntityDataMapper) {
         return new CategoryRepositoryImpl(categoryEntityDataMapper);
     }
 
     @Provides
-    ThreadExecutor provideThreadExecutor() {
-        return new JobExecutor();
+    ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
+        return jobExecutor;
     }
 
     @Provides
-    PostExecutionThread providePostExecutionThread() {
-        return new UiThread();
+    PostExecutionThread providePostExecutionThread(UiThread uiThread) {
+        return uiThread;
     }
 
 }

@@ -9,7 +9,7 @@ import ir.fallahpoor.ca.domain.executor.PostExecutionThread;
 public class UiThread implements PostExecutionThread {
 
     @Inject
-    public UiThread() {
+    UiThread() {
     }
 
     @Override

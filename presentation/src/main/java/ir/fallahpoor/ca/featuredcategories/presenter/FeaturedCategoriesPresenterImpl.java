@@ -32,6 +32,12 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
         getFeaturedCategoriesUseCase.execute(new FeaturedCategoriesObserver(), null);
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        getFeaturedCategoriesUseCase.dispose();
+    }
+
     private final class FeaturedCategoriesObserver extends DisposableObserver<List<Category>> {
 
         @Override

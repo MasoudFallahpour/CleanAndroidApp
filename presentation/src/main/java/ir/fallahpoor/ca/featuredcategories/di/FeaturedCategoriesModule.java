@@ -6,8 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import ir.fallahpoor.ca.UiThread;
 import ir.fallahpoor.ca.data.entity.CategoryEntityDataMapper;
-import ir.fallahpoor.ca.data.repository.CategoryRepositoryImpl;
 import ir.fallahpoor.ca.data.executor.JobExecutor;
+import ir.fallahpoor.ca.data.repository.CategoryRepositoryImpl;
 import ir.fallahpoor.ca.domain.executor.PostExecutionThread;
 import ir.fallahpoor.ca.domain.executor.ThreadExecutor;
 import ir.fallahpoor.ca.domain.interactor.GetFeaturedCategoriesUseCase;
@@ -54,8 +54,8 @@ public class FeaturedCategoriesModule {
     }
 
     @Provides
-    CategoryRepository provideCategoryRepository(CategoryEntityDataMapper
-                                                         categoryEntityDataMapper) {
+    CategoryRepository provideCategoryRepository(
+            CategoryEntityDataMapper categoryEntityDataMapper) {
         return new CategoryRepositoryImpl(categoryEntityDataMapper);
     }
 

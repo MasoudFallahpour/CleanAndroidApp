@@ -1,6 +1,7 @@
 package ir.fallahpoor.ca.featuredcategories.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +24,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = layoutInflater.inflate(R.layout.list_item_category, parent, false);
         return new CategoryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(CategoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         CategoryModel categoryModel = categoryModelList.get(position);
         holder.categoryNameTextView.setText(categoryModel.getName());
         holder.categoryDescriptionTextView.setText(categoryModel.getDescription());
@@ -42,7 +44,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         return (categoryModelList != null) ? categoryModelList.size() : 0;
     }
 
-    public void setCategoryModelList(List<CategoryModel> categoryModelList) {
+    void setCategoryModelList(List<CategoryModel> categoryModelList) {
         this.categoryModelList = categoryModelList;
         notifyDataSetChanged();
     }

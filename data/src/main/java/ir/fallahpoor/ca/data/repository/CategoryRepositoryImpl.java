@@ -20,19 +20,19 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public Observable<List<Category>> getCategories(int categoriesCount) {
+    public Observable<List<Category>> getCategories() {
 
         CategoriesWebService categoriesWebService = WebServiceFactory.createService(
                 CategoriesWebService.class);
 
-        return categoriesWebService.getCategories(categoriesCount).map(
+        return categoriesWebService.getCategories().map(
                 categoryEntityDataMapper::transform);
 
     }
 
     private interface CategoriesWebService {
-        @GET("category/subcategories/featured")
-        Observable<List<CategoryEntity>> getCategories(@Query("topCount") int count);
+        @GET("category/supercategories")
+        Observable<List<CategoryEntity>> getCategories();
     }
 
 }

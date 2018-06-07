@@ -2,10 +2,7 @@ package ir.fallahpoor.ca.featuredcategories.presenter;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
-import java.util.List;
-
-import io.reactivex.observers.DisposableObserver;
-import ir.fallahpoor.ca.domain.Category;
+import io.reactivex.disposables.Disposable;
 import ir.fallahpoor.ca.domain.interactor.GetFeaturedCategoriesUseCase;
 import ir.fallahpoor.ca.featuredcategories.model.CategoryModelDataMapper;
 import ir.fallahpoor.ca.featuredcategories.view.FeaturedCategoriesView;
@@ -15,6 +12,7 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
 
     private GetFeaturedCategoriesUseCase getFeaturedCategoriesUseCase;
     private CategoryModelDataMapper categoryModelDataMapper;
+    private Disposable disposable;
 
     public FeaturedCategoriesPresenterImpl(
             GetFeaturedCategoriesUseCase getFeaturedCategoriesUseCase,
@@ -25,43 +23,34 @@ public class FeaturedCategoriesPresenterImpl extends MvpBasePresenter<FeaturedCa
 
     @Override
     public void getFeaturedCategories() {
+
         ifViewAttached(view -> {
             view.hideRetry();
             view.showLoading();
         });
-        getFeaturedCategoriesUseCase.execute(new FeaturedCategoriesObserver(), null);
+
+        disposable = getFeaturedCategoriesUseCase.execute(null)
+                .subscribe(
+                        categories ->
+                                ifViewAttached(
+                                        view -> {
+                                            view.hideLoading();
+                                            view.hideRetry();
+                                            view.renderCategories(categoryModelDataMapper.transform(categories));
+                                        }),
+                        throwable ->
+                                ifViewAttached(view -> {
+                                    view.hideLoading();
+                                    view.showRetry();
+                                }));
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        getFeaturedCategoriesUseCase.dispose();
-    }
-
-    private final class FeaturedCategoriesObserver extends DisposableObserver<List<Category>> {
-
-        @Override
-        public void onNext(List<Category> categories) {
-            ifViewAttached(
-                    view -> {
-                        view.hideRetry();
-                        view.renderCategories(categoryModelDataMapper.transform(categories));
-                    });
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
-
-        @Override
-        public void onError(Throwable e) {
-            ifViewAttached(view -> {
-                view.hideLoading();
-                view.showRetry();
-            });
-        }
-
-        @Override
-        public void onComplete() {
-            ifViewAttached(FeaturedCategoriesView::hideLoading);
-        }
-
     }
 
 }
